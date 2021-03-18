@@ -93,7 +93,7 @@ TUN needs to be enabled before running this installer."
 fi
 
 read -p "Subnet between 7 and 254 [7]: " subnet
-until [[ -z "$subnet" || "$subnet" =~ ^[0-9]+$ || $subnet -ls 7 || $subnet -ge 255 ]]; do
+until [[ -z "$subnet" || "$subnet" =~ ^[0-9]+$ || $subnet -le 6 || $subnet -ge 255 ]]; do
     echo "$subnet: invalid selection."
     read -p "Subnet [7]: " subnet
 done
