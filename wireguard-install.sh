@@ -92,6 +92,12 @@ TUN needs to be enabled before running this installer."
 	fi
 fi
 
+read -p "Subnet between 7 and 254 [7]: " subnet
+until [[ -z "$subnet" || "$subnet" =~ ^[0-9]+$ || $subnet -ls 7 || $subnet -ge 255 ]]; do
+    echo "$subnet: invalid selection."
+    read -p "Subnet [7]: " subnet
+done
+
 new_client_dns () {
 	echo "Select a DNS server for the client:"
 	echo "   1) Current system resolvers"
@@ -152,12 +158,6 @@ new_client_setup () {
 	psk=$(wg genpsk)
 	# Configure client in the server
 	cat << EOF >> /etc/wireguard/wg0.conf
-
-read -p "Subnet between 7 and 254 [7]: " subnet
-until [[ -z "$subnet" || "$subnet" =~ ^[0-9]+$ || $subnet -ls 7 || $subnet -ge 255 ]]; do
-    echo "$subnet: invalid selection."
-    read -p "Subnet [7]: " subnet
-done
 
 # BEGIN_PEER $client
 [Peer]
